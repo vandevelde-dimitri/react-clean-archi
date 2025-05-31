@@ -9,6 +9,7 @@ const args = process.argv.slice(2);
 const featureName = args[0];
 const isPublic = args.includes("--public");
 const isPrivate = args.includes("--private");
+const shouldDelete = args.includes("--delete");
 
 if (!featureName) {
     console.error("❌ Please provide a feature name.");
@@ -39,15 +40,53 @@ function askRouteType() {
     });
 }
 
-if (args.includes("--help") || args.includes("-h")) {
-    console.log(`
-Usage: create-feature <featureName> [--public | --private]
+// ----- DELETE FEATURE -----
+function removeRouteFromRouter(featureName) {
+    const routerPath = path.join(
+        process.cwd(),
+        "src",
+        "app",
+        "router",
+        "AppRoutes.tsx"
+    );
 
-Options:
-  --public      Injects the route into the public routes
-  --private     Injects the route into the private routes
-  --help, -h    Show this help message
-`);
+    if (!fs.existsSync(routerPath)) {
+        console.error("❌ AppRoutes.tsx not found.");
+        return;
+    }
+
+    const pageComponent = `${capitalize(featureName)}Page`;
+    const importRegex = new RegExp(
+        `^import\\s+${pageComponent}\\s+from\\s+["'][^"']+["'];\\n?`,
+        "gm"
+    );
+    const routeRegex = new RegExp(
+        `\\s*<Route\\s+path="/${featureName}"\\s+element={<${pageComponent} />}\\s*/>\\n?`,
+        "gm"
+    );
+
+    let content = fs.readFileSync(routerPath, "utf8");
+
+    const importRemoved = content.replace(importRegex, "");
+    const routeRemoved = importRemoved.replace(routeRegex, "");
+
+    if (routeRemoved !== content) {
+        fs.writeFileSync(routerPath, routeRemoved, "utf8");
+        console.log(`\x1b[34m✓ src/router/AppRoutes.tsx modified.\x1b[0m`);
+    } else {
+        console.log("ℹ️ No matching route or import found in AppRoutes.tsx");
+    }
+}
+
+if (shouldDelete) {
+    const baseDir = path.join(process.cwd(), "src", "features", featureName);
+    if (!fs.existsSync(baseDir)) {
+        console.error(`❌ Feature "${featureName}" does not exist.`);
+        process.exit(1);
+    }
+    fs.rmSync(baseDir, { recursive: true, force: true });
+    removeRouteFromRouter(featureName);
+    console.log(`\x1b[31m✓ Feature "${featureName}" deleted.\x1b[0m`);
     process.exit(0);
 }
 
