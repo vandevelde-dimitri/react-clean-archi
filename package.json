@@ -1,0 +1,27 @@
+{
+    "name": "create-react-clean-archi",
+    "version": "1.0.0",
+    "description": "A clean architecture starter for React with Vite, Axios, TanStack Query, Zustand, mock mode, and auth.",
+    "bin": {
+        "create-react-clean-archi": "index.js",
+        "create-feature": "./create-feature.js"
+    },
+    "files": [
+        "template",
+        "index.js",
+        "create-feature.js"
+    ],
+    "keywords": [
+        "react",
+        "vite",
+        "starter",
+        "clean-architecture",
+        "zustand",
+        "tanstack-query",
+        "auth",
+        "axios"
+    ],
+    "author": "Vandevelde Dimitri",
+    "license": "MIT",
+    "dependencies": {}
+}
