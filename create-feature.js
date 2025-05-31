@@ -40,6 +40,20 @@ function askRouteType() {
     });
 }
 
+// ----- HELP MESSAGE -----
+if (args.includes("--help") || args.includes("-h")) {
+    console.log(`
+Usage: create-feature <feature-name> [Options]
+
+Options:
+  --public     Create a public route
+  --private    Create a private route
+  --delete     Delete the feature
+  --help, -h   Show this help message
+`);
+    process.exit(0);
+}
+
 // ----- DELETE FEATURE -----
 function removeRouteFromRouter(featureName) {
     const routerPath = path.join(

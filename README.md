@@ -66,44 +66,56 @@ When enabled, services will return data from Faker-based mocks instead of real A
 
 ---
 
-## 🔧 CLI: `create-feature`
+## 🛠 CLI Feature Generator
 
-Quickly generate a new feature folder with the required structure and starter files.
+You can use the built-in CLI tool to generate or delete features.
 
-### Usage
+### ✅ Create a feature
 
-```bash
-npx create-feature myFeature [--public | --private]
+```
+create-feature user
 ```
 
--   `myFeature`: The name of your new feature (camelCase or kebab-case)
--   `--private`: Injects the route under the private route section
--   `--public`: Injects the route under the public route section
--   If neither flag is passed, the CLI will prompt you
+This creates the folder structure:
 
-### What it does:
-
--   Creates `src/features/myFeature/` with:
-    -   `components/`, `data/`, `hooks/`, `pages/`, `services/`, `store/`, `types/`
--   Adds mock data (`Faker`)
--   Generates a sample page, hooks, service
--   Injects import and `<Route />` into `AppRoutes.tsx` (private or public)
-
-### Example:
-
-```bash
-npx create-feature user --private
+```
+src/features/user/
+├── components/
+├── pages/
+├── services/
+├── store/
+├── types/
+├── hooks/
+└── data/
 ```
 
-➡️ Generates the full folder and adds:
+It will also:
 
-```tsx
-<Route path="/user" element={<UserPage />} />
+-   Add a `UserPage` in `pages/`
+-   Register the route automatically in `AppRoutes.tsx`
+-   Ask whether it should be a public or private route
+-   Add mock data, services, and React Query hooks
+
+You can skip the prompt with:
+
+```
+create-feature user --private
+create-feature profile --public
 ```
 
-in your router under the private section.
+### 🗑️ Delete a feature
 
----
+To delete a feature:
+
+```
+create-feature user --delete
+```
+
+This will:
+
+Delete the src/features/user/ folder
+
+Remove related route and import from AppRoutes.tsx
 
 ## 📦 Dependencies
 
