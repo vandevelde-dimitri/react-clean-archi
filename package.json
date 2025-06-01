@@ -1,6 +1,6 @@
 {
     "name": "create-react-clean-archi",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A clean architecture starter for React with Vite, Axios, TanStack Query, Zustand, mock mode, and auth.",
     "bin": {
         "create-react-clean-archi": "index.js",
