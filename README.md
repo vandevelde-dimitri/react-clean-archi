@@ -1,84 +1,140 @@
-# `create-react-clean-archi`
+# 🧱 Create React Clean Archi
 
-A modern and opinionated React starter based on **Clean Architecture** principles. Includes **Vite**, **Zustand**, **TanStack Query**, **Axios**, mock mode support via **Faker**, and an integrated **authentication context**.
-
-## ✨ Features
-
--   ⚡️ Vite for ultra-fast development
--   🏗 Clean architecture (feature-based, scalable)
--   📦 Zustand for state management
--   🔍 TanStack Query for data fetching
--   🌐 Axios + centralized API wrapper
--   🔐 Auth context (with login, logout, auth state)
--   🧪 Mock mode via Faker (toggle via env variable)
--   🧱 CLI to create new features in seconds
+A modern and clean React starter powered by Vite, following the Clean Architecture principles. Includes authentication, routing guards, data mocking, TanStack Query, Zustand, and Axios.
 
 ---
 
-## 🚀 Getting Started
-
-### 1. Scaffold a new project
+## 🚀 Quick Start
 
 ```bash
 npx create-react-clean-archi my-app
 cd my-app
-```
-
-### 2. Start the development server
-
-```bash
 npm install
 npm run dev
 ```
 
 ---
 
-## 🧰 Project Structure
+## 📁 Project Structure
 
-```
+```bash
 src/
-├── app/               # Application setup (router, providers, etc.)
-├── auth/              # Authentication context
-├── features/          # Feature folders (domain-specific)
-│   └── example/
+├── app/         # App root composition (Router, Providers)
+├── features/    # Feature-based modules (e.g. user, auth)
+│   └── user/
 │       ├── components/
-│       ├── data/
-│       ├── hooks/
-│       ├── pages/
 │       ├── services/
-│       ├── store/
-│       └── types/
-├── shared/            # Reusable logic: api, ui, hooks, etc.
-└── main.tsx
+│       ├── types/
+│       ├── data/       # Mock data (used with VITE_USE_FAKE_API)
+├── shared/      # Shared logic (e.g. useApi, UI, utils)
+├── hooks/       # Custom hooks
+├── guards/      # Route guards (PrivateRoute, PublicRoute)
 ```
 
 ---
 
-## 🧪 Mock Mode
+## 🔐 Authentication
 
-Enable mock data by setting the following in your `.env` file:
+-   Token-based authentication with `AuthContext`
 
-```
+-   Stores tokens in `localStorage`
+
+-   Handles 401 / 500 errors globally
+
+-   Auto-refresh of access token with refresh token
+
+-   `logoutUser()` function clears session and redirects
+
+---
+
+## 🌐 API Layer
+
+-   Powered by Axios
+
+-   Built-in auth token injection
+
+-   Handles auto-refresh on 401 responses
+
+-   Toggle between real API and mocks:
+
+```env
 VITE_USE_FAKE_API=true
 ```
 
-When enabled, services will return data from Faker-based mocks instead of real API calls.
+Useful for offline development or simulating data.
+
+---
+
+## 🧪 Mock Data
+
+Example: `features/user/data/mockUsers.ts`
+
+Enable mock mode in `.env`:
+
+```env
+VITE_USE_FAKE_API=true
+```
+
+When active, services like `getAllUsers` will return fake data instead of real API responses.
+
+---
+
+## ⚡ Tech Stack
+
+-   ⚛️ React (Vite)
+
+-   🎯 TypeScript
+
+-   📡 Axios
+
+-   🔐 AuthContext + localStorage
+
+-   🚦 React Router v6 + route guards
+
+-   📦 Zustand (global state)
+
+-   📊 TanStack Query (async data)
+
+-   🎭 Faker.js (mock mode)
+
+---
+
+## 🧠 Design Principles
+
+-   Feature-first structure (Clean Architecture)
+
+-   Decoupled services
+
+-   Mock vs. real API based on environment
+
+-   Minimal, maintainable, and scalable
+
+---
+
+## 🛠 Configuration
+
+Create a `.env` file in your root:
+
+```env
+VITE_API_BASE_URL=https://api.example.com/
+VITE_USE_FAKE_API=false
+```
 
 ---
 
 ## 🛠 CLI Feature Generator
 
-You can use the built-in CLI tool to generate or delete features.
+Built-in CLI to generate or delete features.
 
-### ✅ Create a feature
+### ✅ Create a Feature
 
+```bash
+npx create-feature user
 ```
-create-feature user
-```
 
-This creates the folder structure:
+Creates:
 
-```
+```pgsql
 src/features/user/
 ├── components/
 ├── pages/
@@ -89,46 +145,49 @@ src/features/user/
 └── data/
 ```
 
-It will also:
+Also:
 
--   Add a `UserPage` in `pages/`
--   Register the route automatically in `AppRoutes.tsx`
--   Ask whether it should be a public or private route
--   Add mock data, services, and React Query hooks
+-   Adds a sample `UserPage`
 
-You can skip the prompt with:
+-   Registers the route in `AppRoutes.tsx`
 
+-   Prompts for public/private route (or use flag)
+
+-   Generates mock, hooks, service boilerplate
+
+Use with flags:
+
+```bash
+npx create-feature user --private
+npx create-feature profile --public
 ```
-create-feature user --private
-create-feature profile --public
-```
 
-### 🗑️ Delete a feature
+### 🗑️ Delete a Feature
 
 To delete a feature:
 
+```bash
+npx create-feature user --delete
 ```
-create-feature user --delete
+
+Will:
+
+Delete the `src/features/user/` folder
+
+⚠️ You must manually remove route + import from `AppRoutes.tsx`
+
+---
+
+## 🧰 Available Scripts
+
+```bash
+npm run dev       # Start Vite dev server
+npm run build     # Build the app
+npm run preview   # Preview production build
 ```
-
-This will:
-
-Delete the src/features/user/ folder
-
-Remove related route and import from AppRoutes.tsx
-
-## 📦 Dependencies
-
--   [React](https://react.dev)
--   [Vite](https://vitejs.dev/)
--   [Zustand](https://zustand-demo.pmnd.rs/)
--   [TanStack Query](https://tanstack.com/query/latest)
--   [Axios](https://axios-http.com/)
--   [Faker](https://fakerjs.dev/)
--   [React Router](https://reactrouter.com/)
 
 ---
 
 ## 📄 License
 
-MIT — © [Dimitri Vandevelde](https://github.com/your-username)
+MIT — © Dimitri Vandevelde
